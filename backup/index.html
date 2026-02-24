@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KodNest Premium Build System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="project-name">KODNEST PREMIUM</div>
+        <div class="progress-indicator">Step 1 / 4</div>
+        <div class="status-badge">In Progress</div>
+    </header>
+
+    <div class="context-header">
+        <h1>Foundation & Design System</h1>
+        <p>Defining the structural and visual constraints for the KodNest premium ecosystem.</p>
+    </div>
+
+    <main class="main-container">
+        <section class="primary-workspace">
+            <div class="card">
+                <h2 class="serif" style="margin-bottom: var(--space-2);">Core Workspace</h2>
+                <div class="text-block">
+                    <p style="margin-bottom: var(--space-3);">This is the primary area for interaction. Components here are designed to be predictable and calm, allowing for deep focus on the build process.</p>
+                </div>
+                
+                <div style="display: grid; gap: var(--space-3);">
+                    <div class="input-group">
+                        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">System Identifier</label>
+                        <input type="text" placeholder="e.g. KodNest Core v1.0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Project Description</label>
+                        <textarea rows="4" placeholder="Briefly describe the intent of this build..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-3); display: flex; gap: var(--space-2);">
+                    <button class="btn btn-primary">Initialize Build</button>
+                    <button class="btn btn-secondary">Save Draft</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="serif" style="margin-bottom: var(--space-2);">Visual Hierarchy</h3>
+                <p class="text-block">The system uses a strict spacing scale and limited color palette to maintain coherence across all modules.</p>
+            </div>
+        </section>
+
+        <aside class="secondary-panel">
+            <div class="card">
+                <h3 class="serif" style="margin-bottom: var(--space-2);">Step Instructions</h3>
+                <p style="font-size: 15px; margin-bottom: var(--space-2);">Review the design system configuration. Ensure all tokens are intentional and meet the premium B2C standards.</p>
+                
+                <div class="copyable-prompt">
+                    git init && git add . && git commit -m "Initialize design system"
+                </div>
+
+                <div style="display: grid; gap: var(--space-1); margin-top: var(--space-2);">
+                    <button class="btn btn-secondary" style="width: 100%;">Copy Prompt</button>
+                    <button class="btn btn-secondary" style="width: 100%;">Build in Lovable</button>
+                    <button class="btn btn-primary" style="width: 100%;">It Worked</button>
+                    <button class="btn btn-secondary" style="width: 100%; border-color: rgba(139, 0, 0, 0.2); color: var(--accent);">Error</button>
+                    <button class="btn btn-secondary" style="width: 100%;">Add Screenshot</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="proof-footer">
+        <label class="proof-item">
+            <input type="checkbox">
+            <span>UI Built</span>
+        </label>
+        <label class="proof-item">
+            <input type="checkbox">
+            <span>Logic Working</span>
+        </label>
+        <label class="proof-item">
+            <input type="checkbox">
+            <span>Test Passed</span>
+        </label>
+        <label class="proof-item">
+            <input type="checkbox">
+            <span>Deployed</span>
+        </label>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
