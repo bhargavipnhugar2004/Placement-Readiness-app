@@ -7,6 +7,34 @@ const SKILL_CATEGORIES = {
     "Testing": ["Selenium", "Cypress", "Playwright", "JUnit", "PyTest"]
 };
 
+const ENTERPRISE_COMPANIES = [
+    "amazon", "google", "microsoft", "meta", "apple", "netflix", "infosys",
+    "tcs", "wipro", "accenture", "cognizant", "capgemini", "ibm", "oracle",
+    "cisco", "sap", "nvidia", "adobe", "intel", "samsung"
+];
+
+const COMPANY_MAPPING = {
+    enterprise: {
+        size: "Enterprise (2000+)",
+        focus: "Structured DSA + Core CS Fundamentals",
+        typicalRounds: () => [
+            { title: "Online Test", focus: "DSA + Aptitude", why: "To filter base technical capability and speed." },
+            { title: "Technical Round 1", focus: "DSA + Core CS", why: "Deep dive into algorithms and problem solving." },
+            { title: "Technical Round 2", focus: "CS Fundamentals + DB", why: "Verifying foundational knowledge (OS, DBMS)." },
+            { title: "HR / Managerial", focus: "Culture & Behavioral", why: "Ensuring long-term team fit and communication." }
+        ]
+    },
+    startup: {
+        size: "Startup (<200)",
+        focus: "Practical Problem Solving + Stack Depth",
+        typicalRounds: () => [
+            { title: "Coding Challenge", focus: "Practical Implementation", why: "Testing real-world building skills." },
+            { title: "Tech Discussion", focus: "System Discussion + Frameworks", why: "Discussing architecture and technical decisions." },
+            { title: "Culture Fit", focus: "Mission Alignment", why: "Critical for small, fast-moving teams." }
+        ]
+    }
+};
+
 const QUESTIONS_BANK = {
     "DSA": "How would you optimize search in sorted data?",
     "OOP": "Explain the difference between abstraction and encapsulation with an example.",
@@ -45,6 +73,20 @@ export const analyzeJD = (company, role, jdText) => {
     const skillsList = Object.values(extractedSkills).flat();
     const displaySkills = skillsList.length > 0 ? extractedSkills : { "General": ["General fresher stack"] };
 
+    // Company Intel Logic
+    const companyLower = (company || "").toLowerCase().trim();
+    const isEnterprise = ENTERPRISE_COMPANIES.some(c => companyLower.includes(c));
+    const companySize = isEnterprise ? "enterprise" : "startup";
+    const intel = COMPANY_MAPPING[companySize];
+
+    const companyIntel = {
+        name: company || "Unknown Company",
+        industry: companyLower.includes("bank") || companyLower.includes("finance") ? "FinTech" : "Technology Services",
+        sizeCategory: intel.size,
+        hiringFocus: intel.focus,
+        isEnterprise
+    };
+
     // Calculate Readiness Score
     let score = 35;
     score += Math.min(totalCategories * 5, 30);
@@ -52,6 +94,9 @@ export const analyzeJD = (company, role, jdText) => {
     if (role) score += 10;
     if (jdText.length > 800) score += 10;
     score = Math.min(score, 100);
+
+    // Dynamic Round Flow
+    const roundFlow = intel.typicalRounds(skillsList.includes("DSA") || skillsList.includes("React"));
 
     // Generate Questions (Limit to 10)
     const questions = [];
@@ -126,7 +171,9 @@ export const analyzeJD = (company, role, jdText) => {
         questions: questions.slice(0, 10),
         readinessScore: score,
         baseReadinessScore: score,
-        skillConfidenceMap: {}
+        skillConfidenceMap: {},
+        companyIntel,
+        roundFlow
     };
 };
 

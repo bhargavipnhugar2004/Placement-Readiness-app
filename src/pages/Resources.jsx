@@ -13,7 +13,11 @@ import {
     Copy,
     ChevronRight,
     FileText,
-    AlertCircle
+    AlertCircle,
+    Building,
+    Target,
+    Layers,
+    Info
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { updateHistoryEntry } from '../utils/analyzer';
@@ -32,6 +36,7 @@ const Resources = () => {
                 const parsed = JSON.parse(lastResult);
                 // Ensure map exists for older entries
                 if (!parsed.skillConfidenceMap) parsed.skillConfidenceMap = {};
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setResult(parsed);
             }
         }
@@ -168,6 +173,76 @@ const Resources = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-8">
+                        {/* Company Intel Section */}
+                        {result.companyIntel && (
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden group">
+                                <div className="flex justify-between items-start mb-6">
+                                    <div>
+                                        <h3 className="text-lg font-bold flex items-center gap-2">
+                                            <Building className="w-5 h-5 text-primary" /> Company Intelligence
+                                        </h3>
+                                        <p className="text-xs text-gray-500 font-medium">Heuristically inferred profiling</p>
+                                    </div>
+                                    <div className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${result.companyIntel.isEnterprise ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'
+                                        }`}>
+                                        {result.companyIntel.sizeCategory}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-4">
+                                        <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Hiring Philosophy</p>
+                                            <p className="text-sm font-bold text-gray-900 mb-1">{result.companyIntel.hiringFocus}</p>
+                                            <p className="text-xs text-gray-500 leading-relaxed italic">
+                                                "{result.companyIntel.isEnterprise
+                                                    ? "Expect standardized evaluation with heavy weightage on foundational accuracy."
+                                                    : "Focus on demonstrating ability to deliver working code and adapt to their specific stack."}"
+                                            </p>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <div className="flex-1 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Industry</p>
+                                                <p className="text-sm font-bold text-gray-900">{result.companyIntel.industry}</p>
+                                            </div>
+                                            <div className="flex-1 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Prep Style</p>
+                                                <p className="text-sm font-bold text-gray-900">{result.companyIntel.isEnterprise ? "Academic" : "Practical"}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                                            <Layers className="w-4 h-4 text-primary" /> Typical Interview Flow
+                                        </h4>
+                                        <div className="space-y-4 ml-2">
+                                            {result.roundFlow?.map((round, i) => (
+                                                <div key={i} className="relative pl-6 pb-2 group/round">
+                                                    <div className={`absolute left-0 top-1 w-2.5 h-2.5 rounded-full z-10 ${i === 0 ? 'bg-primary animate-pulse' : 'bg-gray-300'
+                                                        }`}></div>
+                                                    {i !== result.roundFlow.length - 1 && (
+                                                        <div className="absolute left-[4px] top-4 w-0.5 h-full bg-gray-100"></div>
+                                                    )}
+                                                    <div className="space-y-1">
+                                                        <p className="text-sm font-bold text-gray-900 group-hover/round:text-primary transition-colors">
+                                                            {round.title}: <span className="font-medium text-gray-600">{round.focus}</span>
+                                                        </p>
+                                                        <p className="text-[11px] text-gray-400 leading-tight italic">"{round.why}"</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 pt-4 border-t border-gray-50 flex items-center gap-2 text-gray-400">
+                                    <Info className="w-3.5 h-3.5" />
+                                    <span className="text-[10px] font-bold uppercase tracking-widest">Demo Mode: Company intel generated heuristically.</span>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Extracted Skills with Toggles */}
                         <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden">
                             <div className="flex justify-between items-center mb-6">
@@ -188,8 +263,8 @@ const Resources = () => {
                                                         key={i}
                                                         onClick={() => toggleSkill(s)}
                                                         className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${isKnown
-                                                                ? 'bg-green-50 text-green-700 border-green-200 shadow-sm'
-                                                                : 'bg-gray-50 text-gray-500 border-gray-100 hover:border-indigo-200'
+                                                            ? 'bg-green-50 text-green-700 border-green-200 shadow-sm'
+                                                            : 'bg-gray-50 text-gray-500 border-gray-100 hover:border-indigo-200'
                                                             }`}
                                                     >
                                                         {isKnown ? <CheckCircle2 className="w-3 h-3" /> : <div className="w-3 h-3 rounded-full border border-gray-300" />}
