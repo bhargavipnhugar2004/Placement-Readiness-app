@@ -124,7 +124,9 @@ export const analyzeJD = (company, role, jdText) => {
         plan,
         checklist,
         questions: questions.slice(0, 10),
-        readinessScore: score
+        readinessScore: score,
+        baseReadinessScore: score,
+        skillConfidenceMap: {}
     };
 };
 
@@ -132,6 +134,20 @@ export const saveToHistory = (analysis) => {
     const history = JSON.parse(localStorage.getItem('prep_history') || '[]');
     history.unshift(analysis);
     localStorage.setItem('prep_history', JSON.stringify(history.slice(0, 20))); // Keep last 20
+};
+
+export const updateHistoryEntry = (id, updates) => {
+    const history = getHistory();
+    const index = history.findIndex(item => item.id === id);
+    if (index !== -1) {
+        history[index] = { ...history[index], ...updates };
+        localStorage.setItem('prep_history', JSON.stringify(history));
+        // Also update last_result if it's the currently viewed one
+        const lastResult = JSON.parse(localStorage.getItem('last_result') || 'null');
+        if (lastResult && lastResult.id === id) {
+            localStorage.setItem('last_result', JSON.stringify(history[index]));
+        }
+    }
 };
 
 export const getHistory = () => {
