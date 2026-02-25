@@ -13,11 +13,15 @@ const ShipDeployment = () => {
     const navigate = useNavigate();
 
     const getTestStatus = () => {
-        const saved = localStorage.getItem('prp_test_checklist');
-        if (!saved) return false;
-        const checked = JSON.parse(saved);
-        const passedCount = Object.values(checked).filter(Boolean).length;
-        return passedCount === 10;
+        try {
+            const saved = localStorage.getItem('prp_test_checklist');
+            if (!saved) return false;
+            const checked = JSON.parse(saved);
+            const passedCount = Object.values(checked).filter(Boolean).length;
+            return passedCount === 10;
+        } catch {
+            return false;
+        }
     };
 
     const isReadyData = getTestStatus();
@@ -28,8 +32,7 @@ const ShipDeployment = () => {
 
                 {/* Status Illustration */}
                 <div className="relative inline-block">
-                    <div className={`w-32 h-32 rounded-[40px] flex items-center justify-center transition-all duration-700 ${isReadyData ? 'bg-green-500 shadow-2xl shadow-green-100 rotate-0' : 'bg-gray-900 shadow-2xl shadow-gray-200 rotate-12'
-                        }`}>
+                    <div className={`w-32 h-32 rounded-[40px] flex items-center justify-center transition-all duration-700 ${isReadyData ? 'bg-green-500 shadow-2xl shadow-indigo-100 rotate-0' : 'bg-gray-900 shadow-2xl shadow-gray-200 rotate-12'}`}>
                         {isReadyData ? <Rocket className="w-16 h-16 text-white animate-bounce" /> : <Lock className="w-16 h-16 text-white" />}
                     </div>
                     {isReadyData && (
@@ -64,15 +67,15 @@ const ShipDeployment = () => {
 
                     {isReadyData ? (
                         <div className="space-y-4">
-                            <div className="text-left p-4 bg-green-50/50 rounded-2xl border border-green-100 flex gap-3">
-                                <Unlock className="w-5 h-5 text-green-600 shrink-0" />
+                            <div className="text-left p-5 bg-green-50/50 rounded-2xl border border-green-200/50 flex gap-4">
+                                <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
                                 <p className="text-xs font-bold text-green-800 tracking-tight leading-relaxed">
                                     Deployment window is active. All heuristic engines and validation layers are hardened.
                                 </p>
                             </div>
                             <button
                                 onClick={() => window.alert("Shipping Engine Activated! Deployment to main branch initialized...")}
-                                className="w-full py-5 bg-green-600 hover:bg-green-700 text-white rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-green-100 transition-all hover:scale-[1.02]"
+                                className="w-full py-5 bg-primary text-white rounded-3xl font-black text-sm uppercase tracking-widest shadow-2xl shadow-indigo-100 transition-all hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 Confirm Final Ship
                             </button>
