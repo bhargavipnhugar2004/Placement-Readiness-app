@@ -6,6 +6,8 @@ import Practice from './pages/Practice';
 import Assessments from './pages/Assessments';
 import Resources from './pages/Resources';
 import Profile from './pages/Profile';
+import TestChecklist from './pages/TestChecklist';
+import ShipDeployment from './pages/ShipDeployment';
 
 function App() {
   return (
@@ -19,6 +21,9 @@ function App() {
           <Route path="resources" element={<Resources />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+        {/* Maintenance & QA Routes */}
+        <Route path="/prp/07-test" element={<TestChecklist />} />
+        <Route path="/prp/08-ship" element={<ShipDeployment />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
